@@ -85,30 +85,32 @@ async def on_ready():
 #Member Join event
 @client.event
 async def on_member_join(member):
+    await client.wait_until_ready()
     url = member.avatar_url
     name = member.name + "#" + member.discriminator
     print("User %s Joined"%name)
     bannerMake(url,name)
-    channel = client.get_channel(channel_id)
+    channel = client.get_channel(int(channel_id))
     await channel.send(file=discord.File('output.png'))
     #Delete output file for welcome banner
     if os.path.exists('output.png'):
         os.remove('output.png')
     else:
         print('No output file')
-    guild = client.get_guild(guild_id)
+    guild = client.get_guild(int(guild_id))
     total_members = guild.member_count
-    count_channel = client.get_channel(count_channel_id)
+    count_channel = client.get_channel(int(count_channel_id))
     await count_channel.edit(name="Member Count: %d"%total_members)
     print("Updating Count Channel")
 #Member Leave event
 @client.event
 async def on_member_remove(member):
+    await client.wait_until_ready()
     name = member.name
     print("User %s Left"%name)
-    guild = client.get_guild(guild_id)
+    guild = client.get_guild(int(guild_id))
     total_members = guild.member_count
-    count_channel = client.get_channel(count_channel_id)
+    count_channel = client.get_channel(int(count_channel_id))
     await count_channel.edit(name="Member Count: %d"%total_members)
     print("Updating Count Channel")
 #Run bot
